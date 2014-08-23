@@ -6,8 +6,9 @@ var mainState = {
         game.stage.backgroundColor = '#151515';
 
         game.load.image('spaceship', 'assets/sprites/spaceship.png');
-        //game.load.image('star', 'assets/sprites/star.png');
         game.load.image('bg', 'assets/sprites/bg.png');
+
+        game.load.audio('shoot', 'assets/audio/laserShoot.wav');
     },
 
     create: function() {
@@ -25,11 +26,16 @@ var mainState = {
 
         // Display the spaceship
         this.ship = this.game.add.sprite(369, 650, 'spaceship');
-        game.world.bringToTop(this.ship);
 
         game.physics.arcade.enable(this.ship);
-        this.ship.body.gravity.x = 0;
 
+        this.ship.body.collideWorldBounds = true;
+
+        var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        spaceKey.onDown.add(this.shoot, this);
+
+        // Add shoot sound to the game
+        this.shootSound = game.add.audio('shoot');
     },
 
     update: function() {
@@ -59,6 +65,11 @@ var mainState = {
             return;
         }
         this.ship.x += 10;
+    },
+
+    shoot: function() {
+        // Play shoot sound
+        this.shootSound.play();
     },
 
 };
