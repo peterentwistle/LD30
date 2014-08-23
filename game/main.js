@@ -1,8 +1,6 @@
 var mainState = {
 
     create: function() {
-        // This function is called after the preload function
-
         this.running = true;
         this.total = 0;
         this.timer = 0;
