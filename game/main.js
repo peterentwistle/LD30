@@ -1,15 +1,4 @@
-var game = new Phaser.Game(800, 750, Phaser.AUTO, 'game');
-
 var mainState = {
-
-    preload: function() {
-        game.stage.backgroundColor = '#151515';
-
-        game.load.image('spaceship', 'assets/sprites/spaceship.png');
-        game.load.image('bg', 'assets/sprites/bg.png');
-
-        game.load.audio('shoot', 'assets/audio/laserShoot.wav');
-    },
 
     create: function() {
         // This function is called after the preload function
@@ -73,6 +62,3 @@ var mainState = {
     },
 
 };
-
-game.state.add('main', mainState);
-game.state.start('main');
