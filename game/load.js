@@ -4,6 +4,7 @@ var loadState = {
         game.stage.backgroundColor = '#151515';
         game.load.image('spaceship', 'assets/sprites/spaceship.png');
         game.load.image('bg', 'assets/sprites/bg.png');
+        game.load.image('bullet', 'assets/sprites/bullet.png');
         game.load.audio('menuTheme', 'assets/audio/menuTheme.wav');
         game.load.audio('shoot', 'assets/audio/laserShoot.wav');
     },

@@ -4,6 +4,7 @@ var mainState = {
         this.running = true;
         this.total = 0;
         this.timer = 0;
+        this.bulletTime = 0;
 
         // Set up physics system
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -18,8 +19,17 @@ var mainState = {
 
         this.ship.body.collideWorldBounds = true;
 
-        var spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        spaceKey.onDown.add(this.shoot, this);
+        // Create a group for the bullet
+        this.bullets = game.add.group();
+        this.bullets.enableBody = true;
+        this.bullets.physicsBodyType = Phaser.Physics.ARCADE;
+        this.bullets.createMultiple(30, 'bullet');
+        this.bullets.setAll('anchor.x', 0.5);
+        this.bullets.setAll('anchor.y', 1);
+        this.bullets.setAll('outOfBoundsKill', true);
+        this.bullets.setAll('checkWorldBounds', true);
+
+        this.spaceKey = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
         // Add shoot sound to the game
         this.shootSound = game.add.audio('shoot');
@@ -34,6 +44,10 @@ var mainState = {
             this.moveLeft();
         } else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
             this.moveRight();
+        }
+
+        if (this.spaceKey.isDown) {
+            this.shoot();
         }
 
     },
@@ -55,8 +69,18 @@ var mainState = {
     },
 
     shoot: function() {
-        // Play shoot sound
-        this.shootSound.play();
+        if (game.time.now > this.bulletTime) {
+            bullet = this.bullets.getFirstExists(false);
+
+            if (bullet) {
+                bullet.reset(this.ship.x +  this.ship.width/2, this.ship.y);
+                bullet.body.velocity.y = -400;
+                this.bulletTime = game.time.now + 200;
+
+                // Play shoot sound
+                this.shootSound.play();
+            }
+        }
     },
 
 };
