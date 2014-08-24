@@ -23,9 +23,14 @@ var menuState = {
         var developerText = this.game.add.text(x, y + 250, "Game by Peter Entwistle", fontStyle4);
         developerText.anchor.setTo(0.5, 0.5);
 
+        // Add menu music to the game and play
+        this.menuTheme = game.add.audio('menuTheme', 1, true);
+        this.menuTheme.play();
+
     },
 
     start: function() {
         this.game.state.start('main');
+        this.menuTheme.stop();
     },
 };
