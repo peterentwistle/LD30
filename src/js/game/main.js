@@ -20,7 +20,15 @@ var mainState = {
         this.planets.createMultiple(10, 'bluePlanet');
         this.planets.setAll('anchor.x', 0.5);
         this.planets.setAll('anchor.y', 0.5);
-        
+
+        // Create a group for asteroid
+        this.asteroids = game.add.group();
+        this.asteroids.enableBody = true;
+        this.asteroids.physicsBodyType = Phaser.Physics.ARCADE;
+        this.asteroids.createMultiple(20, 'asteroid');
+        this.asteroids.setAll('anchor.x', 0.5);
+        this.asteroids.setAll('anchor.y', 0.5);
+
         // Create a group for the bullet
         this.bullets = game.add.group();
         this.bullets.enableBody = true;
@@ -33,7 +41,7 @@ var mainState = {
 
         this.randomTime(1000, 3000);
 
-        this.timer = game.time.events.loop(this.randTime, this.spawnPlanets, this);
+        this.timer = game.time.events.loop(this.randTime, this.runInTimer, this);
 
         // Display the spaceship
         this.ship = this.game.add.sprite(369, 650, 'spaceship');
@@ -99,6 +107,11 @@ var mainState = {
         }
     },
 
+    runInTimer: function() {
+        this.spawnPlanets();
+        this.spawnAsteroids();
+    },
+
     spawnPlanets: function() {
 
         var planet = this.planets.getFirstDead();
@@ -108,6 +121,20 @@ var mainState = {
 
         planet.checkWorldBounds = true;
         planet.outOfBoundsKill = true;
+    },
+
+    spawnAsteroids: function() {
+
+        var asteroid = this.asteroids.getFirstDead();
+
+        asteroid.reset(Math.random() * 800, -asteroid.height);
+        asteroid.body.velocity.y = 250;
+
+        // Rotate the asteroid by a random angle
+        asteroid.angle = game.rnd.angle();
+
+        asteroid.checkWorldBounds = true;
+        asteroid.outOfBoundsKill = true;
     },
 
     randomTime: function(from, to) {
