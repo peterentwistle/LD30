@@ -14,12 +14,12 @@ var loadState = {
         laodingText.anchor.setTo(0.5, 0.5);
 
         game.stage.backgroundColor = '#151515';
-        game.load.image('spaceship', 'assets/sprites/spaceship.png');
-        game.load.image('bg', 'assets/sprites/bg.png');
-        game.load.image('bullet', 'assets/sprites/bullet.png');
-        game.load.image('bluePlanet', 'assets/sprites/bluePlanet.png');
-        game.load.audio('menuTheme', 'assets/audio/menuTheme.wav');
-        game.load.audio('shoot', 'assets/audio/laserShoot.wav');
+        game.load.image('spaceship', 'src/assets/sprites/spaceship.png');
+        game.load.image('bg', 'src/assets/sprites/bg.png');
+        game.load.image('bullet', 'src/assets/sprites/bullet.png');
+        game.load.image('bluePlanet', 'src/assets/sprites/bluePlanet.png');
+        game.load.audio('menuTheme', 'src/assets/audio/menuTheme.wav');
+        game.load.audio('shoot', 'src/assets/audio/laserShoot.wav');
     },
 
     create: function() {

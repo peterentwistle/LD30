@@ -2,8 +2,8 @@ var bootState = {
 
     preload: function() {
         // Load the preload bar
-        game.load.image('preloadBar', 'assets/sprites/preloadBar.png');
-        game.load.image('preloadOuter', 'assets/sprites/preloadOuter.png');
+        game.load.image('preloadBar', 'src/assets/sprites/preloadBar.png');
+        game.load.image('preloadOuter', 'src/assets/sprites/preloadOuter.png');
     },
 
     create: function() {
