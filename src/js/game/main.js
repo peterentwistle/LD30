@@ -6,6 +6,7 @@ var mainState = {
         this.timer = 0;
         this.bulletTime = 0;
         this.randTime = 0;
+        this.backgroundMovement = 1;
 
         // Set up physics system
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -29,7 +30,7 @@ var mainState = {
         this.asteroids.setAll('anchor.x', 0.5);
         this.asteroids.setAll('anchor.y', 0.5);
 
-        // Create a group for the bullet
+        // Create a group for the bullets
         this.bullets = game.add.group();
         this.bullets.enableBody = true;
         this.bullets.physicsBodyType = Phaser.Physics.ARCADE;
@@ -59,7 +60,7 @@ var mainState = {
 
     update: function() {
         // Move the background image
-        this.background.tilePosition.y += 1;
+        this.background.tilePosition.y += this.backgroundMovement;
 
         // Input
         if (game.input.keyboard.isDown(Phaser.Keyboard.A)) {
@@ -72,6 +73,9 @@ var mainState = {
             this.shoot();
         }
         this.randomTime(1000, 3000);
+
+        // Restart the game if the ship hits an asteroid
+        game.physics.arcade.overlap(this.ship, this.asteroids, this.hitAsteroid, null, this);
 
     },
 
@@ -92,6 +96,10 @@ var mainState = {
     },
 
     shoot: function() {
+        // Disable shooting when dead
+        if (this.ship.alive == false) {
+            return;
+        }
 
         if (game.time.now > this.bulletTime) {
             var bullet = this.bullets.getFirstExists(false);
@@ -135,6 +143,37 @@ var mainState = {
 
         asteroid.checkWorldBounds = true;
         asteroid.outOfBoundsKill = true;
+    },
+
+    hitAsteroid: function() {
+        // If dead already then return
+        if (this.ship.alive == false) {
+            return;
+        }
+
+        // Set alive property of the ship to false
+        this.ship.alive = false;
+
+        // Stop spawning planets and asteroids
+        game.time.events.remove(this.timer);
+
+        // Stop movement of all planets on the screen
+        this.planets.forEachAlive(function(p) {
+            p.body.velocity.y = 0;
+        }, this);
+
+        // Stop movement of all asteroids on the screen
+        this.asteroids.forEachAlive(function(p) {
+            p.body.velocity.y = 0;
+        }, this);
+
+        // Stop movement of all bullets on the screen
+        this.bullets.forEachAlive(function(p) {
+            p.body.velocity.y = 0;
+        }, this);
+
+        // Stop the background from moving
+        this.backgroundMovement = 0;
     },
 
     randomTime: function(from, to) {
