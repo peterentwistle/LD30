@@ -187,10 +187,10 @@ var mainState = {
     },
 
     bulletHitAsteroid: function() {
-        this.score +=50;
-        this.scoreText.text = this.score;
         this.bullet.kill();
         this.asteroid.kill();
+        this.score +=50;
+        this.scoreText.text = this.score;
     },
 
     planetConnected: function() {
