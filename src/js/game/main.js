@@ -191,9 +191,9 @@ var mainState = {
         this.gameOver();
     },
 
-    bulletHitAsteroid: function() {
-        this.asteroid.kill();
-        this.bullet.kill();
+    bulletHitAsteroid: function(bullet, asteroid) {
+        asteroid.kill();
+        bullet.kill();
         this.score +=50;
         this.scoreText.text = this.score;
     },
