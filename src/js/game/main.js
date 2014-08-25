@@ -1,6 +1,7 @@
 var mainState = {
 
     create: function() {
+        this.score = 0;
         this.running = true;
         this.total = 0;
         this.timer = 0;
@@ -56,6 +57,9 @@ var mainState = {
         // Add shoot sound to the game
         this.shootSound = game.add.audio('shoot');
 
+        // Add score to the game
+        this.scoreText = game.add.text(20, 20, "0", { font: "30px Helvetica", fill: "#ffffff" });
+
     },
 
     update: function() {
@@ -73,6 +77,12 @@ var mainState = {
             this.shoot();
         }
         this.randomTime(1000, 3000);
+
+        // Ship hit a planet
+        game.physics.arcade.overlap(this.ship, this.planets, this.planetConnected, null, this);
+
+        // Bullet hit an asteroid
+        game.physics.arcade.overlap(this.bullets, this.asteroids, this.bulletHitAsteroid, null, this);
 
         // Restart the game if the ship hits an asteroid
         game.physics.arcade.overlap(this.ship, this.asteroids, this.hitAsteroid, null, this);
@@ -102,11 +112,11 @@ var mainState = {
         }
 
         if (game.time.now > this.bulletTime) {
-            var bullet = this.bullets.getFirstExists(false);
+            this.bullet = this.bullets.getFirstExists(false);
 
-            if (bullet) {
-                bullet.reset(this.ship.x +  this.ship.width/2, this.ship.y);
-                bullet.body.velocity.y = -400;
+            if (this.bullet) {
+                this.bullet.reset(this.ship.x +  this.ship.width/2, this.ship.y);
+                this.bullet.body.velocity.y = -400;
                 this.bulletTime = game.time.now + 200;
 
                 // Play shoot sound
@@ -122,27 +132,27 @@ var mainState = {
 
     spawnPlanets: function() {
 
-        var planet = this.planets.getFirstDead();
+        this.planet = this.planets.getFirstDead();
 
-        planet.reset(Math.random() * 800, -planet.height);
-        planet.body.velocity.y = 100;
+        this.planet.reset(Math.random() * 800, -this.planet.height);
+        this.planet.body.velocity.y = 100;
 
-        planet.checkWorldBounds = true;
-        planet.outOfBoundsKill = true;
+        this.planet.checkWorldBounds = true;
+        this.planet.outOfBoundsKill = true;
     },
 
     spawnAsteroids: function() {
 
-        var asteroid = this.asteroids.getFirstDead();
+        this.asteroid = this.asteroids.getFirstDead();
 
-        asteroid.reset(Math.random() * 800, -asteroid.height);
-        asteroid.body.velocity.y = 250;
+        this.asteroid.reset(Math.random() * 800, -this.asteroid.height);
+        this.asteroid.body.velocity.y = 250;
 
         // Rotate the asteroid by a random angle
-        asteroid.angle = game.rnd.angle();
+        this.asteroid.angle = game.rnd.angle();
 
-        asteroid.checkWorldBounds = true;
-        asteroid.outOfBoundsKill = true;
+        this.asteroid.checkWorldBounds = true;
+        this.asteroid.outOfBoundsKill = true;
     },
 
     hitAsteroid: function() {
@@ -174,6 +184,18 @@ var mainState = {
 
         // Stop the background from moving
         this.backgroundMovement = 0;
+    },
+
+    bulletHitAsteroid: function() {
+        this.score +=50;
+        this.scoreText.text = this.score;
+        this.bullet.kill();
+        this.asteroid.kill();
+    },
+
+    planetConnected: function() {
+        this.score +=1;
+        this.scoreText.text = this.score;
     },
 
     randomTime: function(from, to) {
