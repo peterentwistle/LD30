@@ -10,8 +10,8 @@ var loadState = {
         // Add loading text
         var fontStyle = {font: "45px Helvetica", fill: "#ffffff"};
         var x = game.world.width/2, y = game.world.height/2;
-        var laodingText = this.game.add.text(x, 100, "Loading...", fontStyle);
-        laodingText.anchor.setTo(0.5, 0.5);
+        var loadingText = this.game.add.text(x, 100, "Loading...", fontStyle);
+        loadingText.anchor.setTo(0.5, 0.5);
 
         game.stage.backgroundColor = '#151515';
         game.load.image('spaceship', 'src/assets/sprites/spaceship.png');

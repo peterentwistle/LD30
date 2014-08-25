@@ -17,7 +17,7 @@ var menuState = {
         var startText = this.game.add.text(x, y, "Press spacebar to start", fontStyle2);
         startText.anchor.setTo(0.5, 0.5);
 
-        var controlText = this.game.add.text(x, y + 50, "Controls: 'a' Left, 'd' Right and 'spacebar' to shoot.", fontStyle3);
+        var controlText = this.game.add.text(x, y + 50, "Controls: 'A' Left, 'D' Right, 'Spacebar' to shoot and 'R' to restart.", fontStyle3);
         controlText.anchor.setTo(0.5, 0.5);
 
         var developerText = this.game.add.text(x, y + 250, "Game by Peter Entwistle", fontStyle4);

@@ -2,7 +2,6 @@ var mainState = {
 
     create: function() {
         this.score = 0;
-        this.running = true;
         this.total = 0;
         this.timer = 0;
         this.bulletTime = 0;
@@ -71,6 +70,10 @@ var mainState = {
             this.moveLeft();
         } else if (game.input.keyboard.isDown(Phaser.Keyboard.D)) {
             this.moveRight();
+        }
+
+        if (game.input.keyboard.isDown(Phaser.Keyboard.R)) {
+            this.restartGame();
         }
 
         if (this.spaceKey.isDown) {
@@ -184,11 +187,13 @@ var mainState = {
 
         // Stop the background from moving
         this.backgroundMovement = 0;
+
+        this.gameOver();
     },
 
     bulletHitAsteroid: function() {
-        this.bullet.kill();
         this.asteroid.kill();
+        this.bullet.kill();
         this.score +=50;
         this.scoreText.text = this.score;
     },
@@ -200,6 +205,24 @@ var mainState = {
 
     randomTime: function(from, to) {
         this.randTime = Math.floor(Math.random() * to) + from;
+    },
+
+    gameOver: function() {
+        // Game over text
+        gameOverText = game.add.text(game.width/2, game.height/2, "Game Over", { font: "30px Helvetica", fill: "#ffffff" });
+        gameOverText.anchor.setTo(0.5, 0.5);
+
+        // Score text
+        scoreText = game.add.text(game.width/2, game.height/2 + 50, "Final Score: " + this.score, { font: "30px Helvetica", fill: "#ffffff" });
+        scoreText.anchor.setTo(0.5, 0.5);
+
+        // Score text
+        scoreText = game.add.text(game.width/2, game.height/2 + 100, "Press 'R' to restart the game", { font: "20px Helvetica", fill: "#ffffff" });
+        scoreText.anchor.setTo(0.5, 0.5);
+    },
+
+    restartGame: function() {
+        game.state.start('main');
     },
 
 };
